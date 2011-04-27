@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+# el primer parametro es el archivo de salida
+$Archivo_index = shift;
+
+opendir(DIR, ".");
+@array = sort(grep(/.*\.(jpg|jpeg|png|bmp|gif)/i,readdir(DIR)));
+closedir(DIR);
+
+open(OUTPUT_FILE, ">$Archivo_index");
+
+print OUTPUT_FILE "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+print OUTPUT_FILE "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+print OUTPUT_FILE "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"es\" lang=\"es\">\n";
+print OUTPUT_FILE "  <head>\n";
+print OUTPUT_FILE "    <title>Fotos</title>\n";
+print OUTPUT_FILE "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
+print OUTPUT_FILE "    <link rel='Stylesheet' type=\"text/css\" href=\"./photos.css\" />\n";
+print OUTPUT_FILE "  </head>\n";
+print OUTPUT_FILE "  <body>\n";
+print OUTPUT_FILE "    <ul class=\"photos\">\n";
+
+foreach (@array) {
+   s/\n//;
+   print OUTPUT_FILE "      <li><a href=\"$_\" ><img alt=\"$_\" src=\"./small_$_\" /></a></li>\n";
+} # foreach
+
+print OUTPUT_FILE "    </ul>\n";
+print OUTPUT_FILE "  </body>\n";
+print OUTPUT_FILE "</html>\n";
+
+close(OUTPUT_FILE);
